@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  dehydrated-docker:
+    image: ghcr.io/cerebralxor/dehydrated-docker:master
+    volumes:
+      - dehydrated-data:/dehydrated_data
+      - /etc/dehydrated_certs:/certificates
+    environment:
+      - DOMAIN=<domain.com *.domain.com>
+      - PROVIDER=<dns provider e.g. namecheap>
+      - LEXICON_NAMECHEAP_USERNAME_FILE=/var/run/secrets/dns_provider_user
+      - LEXICON_NAMECHEAP_TOKEN_FILE=/var/run/secrets/dns_provider_token
+      - PUSHOVER_USER=/var/run/secrets/pushover_user
+      - PUSHOVER_TOKEN_FILE=/var/run/secrets/pushover_token
+    secrets:
+      - dns_provider_token
+      - dns_provider_user
+      - pushover_user
+      - pushover_token
+
+secrets:
+  dns_provider_user:
+    external: true
+  dns_provider_token:
+    external: true
+  pushover_user:
+    external: true
+  pushover_token:
+    external: true
+
+volumes:
+  dehydrated-data:
