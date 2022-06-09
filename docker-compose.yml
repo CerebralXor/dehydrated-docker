@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   dehydrated-docker:
-    image: ghcr.io/cerebralxor/dehydrated-docker:master
+    image: ghcr.io/cerebralxor/dehydrated-docker:main
     volumes:
       - dehydrated-data:/dehydrated_data
       - /etc/dehydrated_certs:/certificates

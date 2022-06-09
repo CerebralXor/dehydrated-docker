@@ -5,11 +5,11 @@ A docker image and compose file to run [dehydrated](https://dehydrated.io) and [
 
 First accept the terms. This only needs to be done once. A volume for persistent storage is required at `/dehydrated_data` to store the registration information (see https://letsencrypt.org for the terms):
 
-`docker run -v dehydrated_data:/dehydrated_data ghcr.io/cerebralxor/dehydrated-docker:master dehydrated --register --accept-terms`
+`docker run -v dehydrated_data:/dehydrated_data ghcr.io/cerebralxor/dehydrated-docker:main dehydrated --register --accept-terms`
 
 After registering and accepting the terms, the certificates can be generated simply by starting the container. A mount to `/certificates` (where the generated certificates will be located), and the use of a volume at `/dehydrated_data` for persistent data is required.
 
-`docker run -v /some/path/to/certificates:/certificates -v dehydrated_data:/dehydrated_data --env DOMAIN='domain.com *.domain.com' --env PROVIDER=namecheap --env LEXICON_NAMECHEAP_TOKEN=<TOKEN> --env LEXICON_NAMECHEAP_USERNAME=<USERNAME> ghcr.io/cerebralxor/dehydrated-docker:master`
+`docker run -v /some/path/to/certificates:/certificates -v dehydrated_data:/dehydrated_data --env DOMAIN='domain.com *.domain.com' --env PROVIDER=namecheap --env LEXICON_NAMECHEAP_TOKEN=<TOKEN> --env LEXICON_NAMECHEAP_USERNAME=<USERNAME> ghcr.io/cerebralxor/dehydrated-docker:main`
 
 An example [compose file](./docker-compose.yml) is also provided showing use of docker secrets to provide the credentials.
 
