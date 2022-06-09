@@ -10,13 +10,16 @@ services:
       - PROVIDER=<dns provider e.g. namecheap>
       - LEXICON_NAMECHEAP_USERNAME_FILE=/var/run/secrets/dns_provider_user
       - LEXICON_NAMECHEAP_TOKEN_FILE=/var/run/secrets/dns_provider_token
-      - PUSHOVER_USER=/var/run/secrets/pushover_user
+      - PUSHOVER_USER_FILE=/var/run/secrets/pushover_user
       - PUSHOVER_TOKEN_FILE=/var/run/secrets/pushover_token
     secrets:
       - dns_provider_token
       - dns_provider_user
       - pushover_user
       - pushover_token
+    deploy:
+      restart_policy:
+        condition: none
 
 secrets:
   dns_provider_user:
