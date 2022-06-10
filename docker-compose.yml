@@ -19,7 +19,7 @@ services:
       - pushover_token
     deploy:
       restart_policy:
-        condition: none
+        condition: any
 
 secrets:
   dns_provider_user:
