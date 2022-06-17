@@ -6,6 +6,7 @@ services:
       - dehydrated-data:/dehydrated_data
       - /etc/dehydrated_certs:/certificates
     environment:
+      - TZ=UTC
       - DOMAIN=<domain.com *.domain.com>
       - PROVIDER=<dns provider e.g. namecheap>
       - LEXICON_NAMECHEAP_USERNAME_FILE=/var/run/secrets/dns_provider_user

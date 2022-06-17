@@ -27,6 +27,7 @@ The following environment variables are required:
 
 #### Optional:
 
+- `TZ` - Your local timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a list of available timezones.
 - `INTERVAL` - Time (in minutes) to wait before checking again for new certificates. Set to `0` to check only once and exit. Default is 720 (12 hours).
 - `LOG_LEVEL` - Python log level. Either `DEBUG`, `INFO`, `WARNING`, `ERROR` or `CRITICAL`. Default is `INFO`.
 - `PROVIDER_UPDATE_DELAY` - Time in seconds to wait between updating DNS records and allowing Let's Encrypt to read those records. Default is 30 seconds.
