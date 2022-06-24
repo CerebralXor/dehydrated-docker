@@ -18,7 +18,7 @@ TIMESTAMP =     datetime.datetime.now().isoformat(timespec='seconds').replace(':
 
 ch = logging.StreamHandler()
 ch.setLevel(getattr(logging, os.getenv('LOG_LEVEL', 'INFO')))
-ch.setFormatter(logging.Formatter('%(asctime)s %(name)-15s [%(levelname)-8s] %(message)s'))
+ch.setFormatter(logging.Formatter('%(name)-15s [%(levelname)-8s] %(message)s'))
 logger = logging.getLogger('secrets-updater')
 logger.setLevel(getattr(logging, os.getenv('LOG_LEVEL', 'INFO')))
 logger.addHandler(ch)
@@ -89,19 +89,19 @@ for service in client.services.list():
         # Loop through all secrets used by service and build a list of `SecretReference` objects to update the service with.
         secrets = []
         for secret in service.attrs['Spec']['TaskTemplate']['ContainerSpec']['Secrets']:
-            if secret['SecretName'].startswith(f'{os.environ["KEY_SECRET"]}_{DOMAIN}'):
+            if 'KEY_SECRET' in os.environ and secret['SecretName'].startswith(f'{os.environ["KEY_SECRET"]}_{DOMAIN}'):
                 logger.info(f'   - {secret["SecretName"]}: Replacing SSL Key with new secret {os.environ["KEY_SECRET"]}_{DOMAIN}_{TIMESTAMP}')
                 secrets.append(docker.types.SecretReference(secret_id=new_key_secret.id, secret_name=new_key_secret.name, filename=secret['File']['Name'], uid=secret['File']['UID'], gid=secret['File']['GID'], mode=secret['File']['Mode']))
                 logger.debug(f'     - Result: {secrets[-1]}')
-            elif secret['SecretName'].startswith(f'{os.environ["CERT_SECRET"]}_{DOMAIN}'):
+            elif 'CERT_SECRET' in os.environ and secret['SecretName'].startswith(f'{os.environ["CERT_SECRET"]}_{DOMAIN}'):
                 logger.info(f'   - {secret["SecretName"]}: Replacing SSL Certificate with new secret {os.environ["CERT_SECRET"]}_{DOMAIN}_{TIMESTAMP}')
                 secrets.append(docker.types.SecretReference(secret_id=new_cert_secret.id, secret_name=new_cert_secret.name, filename=secret['File']['Name'], uid=secret['File']['UID'], gid=secret['File']['GID'], mode=secret['File']['Mode']))
                 logger.debug(f'     - Result: {secrets[-1]}')
-            elif secret['SecretName'].startswith(f'{os.environ["FULLCHAIN_SECRET"]}_{DOMAIN}'):
+            elif 'FULLCHAIN_SECRET' in os.environ and secret['SecretName'].startswith(f'{os.environ["FULLCHAIN_SECRET"]}_{DOMAIN}'):
                 logger.info(f'   - {secret["SecretName"]}: Replacing SSL Full Chain with new secret {os.environ["FULLCHAIN_SECRET"]}_{DOMAIN}_{TIMESTAMP}')
                 secrets.append(docker.types.SecretReference(secret_id=new_fullchain_secret.id, secret_name=new_fullchain_secret.name, filename=secret['File']['Name'], uid=secret['File']['UID'], gid=secret['File']['GID'], mode=secret['File']['Mode']))
                 logger.debug(f'     - Result: {secrets[-1]}')
-            elif secret['SecretName'].startswith(f'{os.environ["CHAIN_SECRET"]}_{DOMAIN}'):
+            elif 'CHAIN_SECRET' in os.environ and secret['SecretName'].startswith(f'{os.environ["CHAIN_SECRET"]}_{DOMAIN}'):
                 logger.info(f'   - {secret["SecretName"]}: Replacing SSL Chain with new secret {os.environ["CHAIN_SECRET"]}_{DOMAIN}_{TIMESTAMP}')
                 secrets.append(docker.types.SecretReference(secret_id=new_chain_secret.id, secret_name=new_chain_secret.name, filename=secret['File']['Name'], uid=secret['File']['UID'], gid=secret['File']['GID'], mode=secret['File']['Mode']))
                 logger.debug(f'     - Result: {secrets[-1]}')
