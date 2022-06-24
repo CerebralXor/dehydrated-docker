@@ -104,7 +104,7 @@ function deploy_cert {
     date --iso=min > ${CERTDIR}/renewed
 
     if [[ -v KEY_SECRET ]] || [[ -v CERT_SECRET ]] || [[ -v CHAIN_SECRET ]] || [[ -v FULLCHAIN_SECRET ]]; then
-      if [ -e /var/run/docker.sock ];
+      if [ -e /var/run/docker.sock ]; then
         ./update_swarm_secrets.py ${DOMAIN} ${KEYFILE} ${CERTFILE} ${FULLCHAINFILE} ${CHAINFILE}
       fi
     fi
