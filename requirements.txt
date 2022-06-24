@@ -1,0 +1,2 @@
+dns-lexicon[full]==3.11.*
+docker==5.0.*

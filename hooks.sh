@@ -83,10 +83,6 @@ function deploy_cert {
 
     echo "deploy_cert called: ${DOMAIN}, ${KEYFILE}, ${CERTFILE}, ${FULLCHAINFILE}, ${CHAINFILE}"
 
-    if [[ -v PUSHOVER_TOKEN ]] && [[ -v PUSHOVER_USER ]]; then
-      /usr/bin/curl -s -F token=${PUSHOVER_TOKEN} -F user=${PUSHOVER_USER} -F "message=${DOMAIN} certificates renewed" https://api.pushover.net/1/messages.json
-    fi
-
     # This hook is called once for each certificate that has been
     # produced. Here you might, for instance, copy your new certificates
     # to service-specific locations and reload the service.
@@ -106,6 +102,16 @@ function deploy_cert {
 
     # Create a file that says certs have been renewed, triggering Nginx to restart
     date --iso=min > ${CERTDIR}/renewed
+
+    if [[ -v KEY_SECRET ]] || [[ -v CERT_SECRET ]] || [[ -v CHAIN_SECRET ]] || [[ -v FULLCHAIN_SECRET ]]; then
+      if [ -e /var/run/docker.sock ];
+        ./update_swarm_secrets.py ${DOMAIN} ${KEYFILE} ${CERTFILE} ${FULLCHAINFILE} ${CHAINFILE}
+      fi
+    fi
+
+    if [[ -v PUSHOVER_TOKEN ]] && [[ -v PUSHOVER_USER ]]; then
+      /usr/bin/curl -s -F token=${PUSHOVER_TOKEN} -F user=${PUSHOVER_USER} -F "message=${DOMAIN} certificates renewed" https://api.pushover.net/1/messages.json
+    fi
 
 }
 

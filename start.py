@@ -12,9 +12,9 @@ import time
 
 ch = logging.StreamHandler()
 ch.setLevel(getattr(logging, os.getenv('LOG_LEVEL', 'INFO')))
-ch.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+ch.setFormatter(logging.Formatter('%(asctime)s %(name)-15s [%(levelname)-8s] %(message)s'))
 
-daemon_logger = logging.getLogger('daemon    ')  # Make all logger names 10 characters long so they're nicely tabulated in the output.
+daemon_logger = logging.getLogger('daemon')
 daemon_logger.setLevel(getattr(logging, os.getenv('LOG_LEVEL', 'INFO')))
 daemon_logger.addHandler(ch)
 
